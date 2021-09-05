@@ -6,7 +6,7 @@
 /*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/30 23:29:24 by hiwata            #+#    #+#             */
-/*   Updated: 2021/09/04 15:44:41 by hiwata           ###   ########.fr       */
+/*   Updated: 2021/09/03 17:22:22 by hiwata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void draw_map(t_info *info, int x, int y)
 
 }
 
-void draw_rect(t_info *info)
+void windows_init(t_info *info)
 {
 	int i;
 	int j;
@@ -49,7 +49,7 @@ void draw_rect(t_info *info)
 		j = 0;
 		while(j < info->col * TILE_SIZE)
 		{
-			info->img.data[(i * info->col * TILE_SIZE) + j] = 0;
+			info->img.data[i + j] = 0;
 			j++;
 		}
 		i++;
@@ -60,7 +60,8 @@ void make_map(t_info *info)
 {
 	int x;
 	int y;
-
+// windowの初期化（多分別関数に移す）
+	windows_init(info);
 	y = 0;
 	while (y < info->row)
 	{
@@ -82,11 +83,11 @@ void player_render(t_info *info, int x, int y)
 	int i;
 	int j;
 
-	i = y;
-	while (i < y + TILE_SIZE)
+	i = y + TILE_SIZE / 2;
+	while (i < x + 10)
 	{
-		j = x;
-		while (j < x + TILE_SIZE)
+		j = x + TILE_SIZE / 2;
+		while (j < y + 10)
 		{
 			info->img.data[(i * info->col * TILE_SIZE) + j] = 0XFF0000;
 			j++;
@@ -111,7 +112,7 @@ void player_walk(t_info *info)
 	{
 		info->px = new_x;
 		info->py = new_y;
-		// printf("newx = %d, newy = %d\n", info->px, info->py);
+		printf("newx = %d, newy = %d\n", info->px, info->py);
 	}
 }
 
@@ -131,23 +132,18 @@ void player_move_init(t_info *info)
 
 int render(t_info *info)
 {
-	// printf("aaaa\n");
-	// windowの初期化
-	draw_rect(info);
+	printf("aaaa\n");
 	// マップのレンダー
 	make_map(info);
-	// px,pyを入力方向に動かす
+	// プレイヤーを動かす
 	player_walk(info);
-	//動いた場所を描く
 	player_render(info, info->px * TILE_SIZE, info->py * TILE_SIZE);
-	// オフセットの初期化
 	player_move_init(info);
-	// windowへの反映
 	mlx_put_image_to_window(info->mlx, info->mlx_win, info->img.img, 0, 0);
 	return (1);
 }
 
-int	key_released(int keycode, t_info *info)
+int	key_pressed(int keycode, t_info *info)
 {
 	// printf("key=%d\n", keycode);
 	if (keycode == 53)
@@ -195,8 +191,8 @@ int main (int argc, char **argv)
 	info.mlx_win = mlx_new_window(info.mlx, info.col * 64, info.row * 64, "Hello world!");
 	info.img.img = mlx_new_image(info.mlx, info.col * 64, info.row * 64);
 	info.img.data = (int*)mlx_get_data_addr(info.img.img, &(info.img.bits_per_pixel), &(info.img.line_length), &(info.img.endian));
-	// render(&info);
-	mlx_hook(info.mlx_win, 3, 1L<<1, &key_released, &info);
+	render(&info);
+	mlx_hook(info.mlx_win, 2, 1L<<0, &key_pressed, &info);
 	// mlx_hook(vars.win, 3, 1L<<1, &key_released, &vars);
 	mlx_hook(info.mlx_win, 17, 1L<<17, &win_destroy, &info);
 	mlx_hook(info.mlx_win, 33, 1L<<17, &win_destroy, &info);

@@ -6,16 +6,30 @@
 /*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 16:44:36 by hiwata            #+#    #+#             */
-/*   Updated: 2021/08/31 20:53:33 by hiwata           ###   ########.fr       */
+/*   Updated: 2021/08/30 22:59:54 by hiwata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "get_next_line.h"
-#include "so_long.h"
+#include "./libft.h"
+#include "./get_next_line.h"
+#include <stdio.h>
+#include <stdbool.h>
 
-
-// ファイルを読み込みエラーのチェクと、それぞれのオブジェクトの座標を取る
+typedef struct s_info
+{
+	char	**map;
+	size_t	row;
+	size_t	col;
+	int		fd;
+	int		C;
+	int		px;
+	int		py;
+	int		ex;
+	int		ey;
+	int		tC;
+	int		*cx;
+	int		*cy;
+}				t_info;
 
 bool	freei_return(char **ptr, int n, bool ret)
 {
@@ -339,22 +353,22 @@ void	check_map(t_info *info)
 	get_location_C(info);
 }
 
-// int main (int argc, char **argv)
-// {
-// 	t_info	info;
+int main (int argc, char **argv)
+{
+	t_info	info;
 
-// 	// if (argc != 2)
-// 		// return (0);
-// 	init_info(&info);
-// 	info.fd = open(argv[1], O_RDONLY);
-// 	if (info.fd < 0)
-// 		return (0);
-// 	read_map(&info);
-// 	check_map(&info);
-// 	for (int i = 0; i < info.row; i++)
-// 	{
-// 		printf("%s\n", info.map[i]);
-// 	}
-// 	printf("px = %d, py = %d, ex = %d, ey = %d, C = %d\n", info.px, info.py, info.ex, info.ey, info.C);
-// 	system("leaks a.out");
-// }
+	// if (argc != 2)
+		// return (0);
+	init_info(&info);
+	info.fd = open(argv[1], O_RDONLY);
+	if (info.fd < 0)
+		return (0);
+	read_map(&info);
+	check_map(&info);
+	for (int i = 0; i < info.row; i++)
+	{
+		printf("%s\n", info.map[i]);
+	}
+	printf("px = %d, py = %d, ex = %d, ey = %d, C = %d\n", info.px, info.py, info.ex, info.ey, info.C);
+	system("leaks a.out");
+}

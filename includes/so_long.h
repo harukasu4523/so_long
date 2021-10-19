@@ -6,7 +6,7 @@
 /*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/30 23:31:44 by hiwata            #+#    #+#             */
-/*   Updated: 2021/09/03 16:17:26 by hiwata           ###   ########.fr       */
+/*   Updated: 2021/10/15 16:57:32 by hiwata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,14 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+
+typedef struct 	s_tex
+{
+	int *texture[5];
+	int tex_width[5];
+	int tex_height[5];
+
+}				t_tex;
 
 typedef struct s_player
 {
@@ -29,12 +37,15 @@ typedef struct	s_data {
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	int		width;
+	int		height;
 }				t_data;
 
 typedef struct s_info
 {
 	t_data	img;
 	t_player p;
+	t_tex	tex;
 	void	*mlx;
 	void	*mlx_win;
 	char	**map;
@@ -49,6 +60,7 @@ typedef struct s_info
 	int		tC;
 	int		*cx;
 	int		*cy;
+	int		move_cnt;
 }				t_info;
 
 

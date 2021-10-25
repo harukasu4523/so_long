@@ -6,17 +6,12 @@
 /*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 16:44:36 by hiwata            #+#    #+#             */
-/*   Updated: 2021/09/07 22:16:33 by hiwata           ###   ########.fr       */
+/*   Updated: 2021/10/23 23:10:59 by hiwata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "get_next_line.h"
 #include "so_long.h"
-
-
 // ファイルを読み込みエラーのチェクと、それぞれのオブジェクトの座標を取る
-
 bool	freei_return(char **ptr, int n, bool ret)
 {
 	int	i;
@@ -30,7 +25,7 @@ bool	freei_return(char **ptr, int n, bool ret)
 	return (ret);
 }
 
-void init_info(t_info *info)
+void	init_info(t_info *info)
 {
 	info->map = NULL;
 	info->row = 0;
@@ -41,13 +36,14 @@ void init_info(t_info *info)
 	info->py = 0;
 	info->ex = 0;
 	info->ey = 0;
+	info->move_cnt = 0;
 }
 
-void is_map_square(char **buf, t_info *info)
+void	is_map_square(char **buf, t_info *info)
 {
-	int vert;
-	int i;
-	int j;
+	int	vert;
+	int	i;
+	int	j;
 
 	vert = 0;
 	while (buf[0][vert])
@@ -70,7 +66,7 @@ void is_map_square(char **buf, t_info *info)
 
 //一度info->mapに情報を入れてからエラーか判定する
 
-bool set_map(char *line, t_info *info)
+bool	set_map(char *line, t_info *info)
 {
 	char	**old;
 	char	**new;
@@ -91,7 +87,7 @@ bool set_map(char *line, t_info *info)
 	}
 	//今回きた行をnewに追加してそれをinfo->mapに格納
 	new[i] = ft_strdup(line);
-	if(!new[i])
+	if (!new[i])
 		return (freei_return(new, i, false));
 	info->map = new;
 	info->row++;
@@ -108,16 +104,16 @@ void	free_line(t_info *info, int ret, char *line)
 	}
 }
 
-int	find_chr(const char *s1,const char *s2)
+int	find_chr(const char *s1, const char *s2)
 {
 	int	i;
 	int	j;
-	int checker;
+	int	checker;
 
-	if (!*s1)
-		return(0);
+	if (! *s1)
+		return (0);
 	i = 0;
-	while(s1[i])
+	while (s1[i])
 	{
 		j = 0;
 		checker = 0;
@@ -145,7 +141,7 @@ void	read_map(t_info *info)
 {
 	int		ret;
 	char	*line;
-	int i;
+	int		i;
 
 	i = 0;
 	//マップの読み込みと受け取り
@@ -154,7 +150,7 @@ void	read_map(t_info *info)
 	{
 		// printf("-------%d------\n",i++);
 		//いらない要素があればエラーだす
-		if(!(find_chr(line, "10CPE")))
+		if (!(find_chr(line, "10CPE")))
 		{
 			printf("Error\nInvalid Map\n");
 			exit (1);
@@ -170,38 +166,42 @@ void	read_map(t_info *info)
 	close(info->fd);
 }
 
+void	get_location_player(t_info *info, int x, int y)
+{
+	if (info->px == 0 && info->py == 0)
+	{
+		info->px = x;
+		info->py = y;
+	}
+	else
+	{
+		printf("Error\nThere are multiple players on the map\n");
+		exit(1);
+	}
+}
+
+void	get_location_vent(t_info *info, int x, int y)
+{
+	if (info->ex == 0 && info->ey == 0)
+	{
+		info->ex = x;
+		info->ey = y;
+	}
+	else
+	{
+		printf("Error\nThere are multiple end points on the map\n");
+		exit(1);
+	}
+}
+
 void	get_location_object(t_info *info, char**map, int y, int x)
 {
 	if (map[y][x] == 'C')
-	{
 		info->C++;
-	}
 	else if (map[y][x] == 'P')
-	{
-		if(info->px == 0 && info->py == 0)
-		{
-			info->px = x;
-			info->py = y;
-		}
-		else
-		{
-			printf("Error\nThere are multiple players on the map\n");
-			exit(1);
-		}
-	}
+		get_location_player(info, x, y);
 	else if (map[y][x] == 'E')
-	{
-		if(info->ex == 0 && info->ey == 0)
-		{
-			info->ex = x;
-			info->ey = y;
-		}
-		else
-		{
-			printf("Error\nThere are multiple end points on the map\n");
-			exit(1);
-		}
-	}
+		get_location_vent(info, x, y);
 }
 
 void	search_location_object(char **map, t_info *info)
@@ -235,12 +235,15 @@ void	search_location_object(char **map, t_info *info)
 
 bool	is_map_surrounded(t_info *info, int x, int y)
 {
-	char **map = info->map;
+	char	**map;
 
+	map = info->map;
 	//maxとminの場所が決まっているのでそれ以上探索しないようにする
-	if ((x == 0 || y == 0 || x == info->col || y == info->row) && map[y][x] != '1')
+	if ((x == 0 || y == 0 || x == info->col \
+	|| y == info->row) && map[y][x] != '1')
 		return (false);
-	if (map[y][x] == '1' || map[y][x] == '*' || map[y][x] == 'G' || map[y][x] == 'e')
+	if (map[y][x] == '1' || map[y][x] == '*' \
+	|| map[y][x] == 'G' || map[y][x] == 'e')
 		return (true);
 	if (map[y][x] == 'C')
 	{
@@ -248,24 +251,48 @@ bool	is_map_surrounded(t_info *info, int x, int y)
 		//座標をとっていないので別のものに置き換える
 		map[y][x] = 'G';
 	}
-	// 置き換えいらないかも
 	else if (map[y][x] == 'E')
 	{
 		map[y][x] = 'e';
 	}
 	else
 		map[y][x] = '*';
-	return (is_map_surrounded(info, x + 1, y) && is_map_surrounded(info, x - 1, y) && \
-	is_map_surrounded(info, x, y + 1) && is_map_surrounded(info, x, y - 1));
+	return (is_map_surrounded(info, x + 1, y) && \
+	is_map_surrounded(info, x - 1, y) && is_map_surrounded(info, x, y + 1) \
+	&& is_map_surrounded(info, x, y - 1));
 }
 
-void get_location_C(t_info *info)
+void	in_location_c(t_info *info, int *bufx, int *bufy)
 {
-	int *bufx;
-	int *bufy;
-	int i;
-	int j;
-	int k;
+	int	i;
+	int	j;
+	int	k;
+
+	i = 0;
+	k = 0;
+	int cnt = 0;
+	while (i < info->row)
+	{
+		j = 0;
+		while (j < info->col)
+		{
+			cnt++;
+			if (info->map[i][j] == 'G')
+			{
+				bufx[k] = j;
+				bufy[k] = i;
+				k++;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+void	get_location_c(t_info *info)
+{
+	int	*bufx;
+	int	*bufy;
 
 	bufx = malloc(sizeof(int) * info->C);
 	if (!bufx)
@@ -279,37 +306,12 @@ void get_location_C(t_info *info)
 		printf("Error\nFailed to allocate malloc\n");
 		exit(1);
 	}
-	i = 0;
-	k = 0;
-	while (i < info->row)
-	{
-		j = 0;
-		while (j < info->col)
-		{
-			if (info->map[i][j] == 'G')
-			{
-				bufx[k] = j;
-				bufy[k] = i;
-				printf("%d : (x, y) = (%d, %d)\n", k, j , i);
-				k++;
-			}
-			j++;
-		}
-		i++;
-	}
+	in_location_c(info, bufx, bufy);
 	info->cx = bufx;
 	info->cy = bufy;
-	// free(bufx);
-	// free(bufy);
-	i = 0;
-	while(i < info->C)
-	{
-		printf("%d : (x, y) = (%d, %d)\n", i, info->cx[i], info->cy[i]);
-		i++;
-	}
+	free(bufx);
+	free(bufy);
 }
-
-
 
 void	check_map(t_info *info)
 {
@@ -324,7 +326,9 @@ void	check_map(t_info *info)
 		exit(1);
 	}
 	// 四角が1かどうか調べる
-	if (info->map[0][0] != '1' || info->map[0][info->col - 1] != '1' || info->map[info->row - 1][0] != '1' || info->map[info->row - 1][info->col - 1] != '1')
+	if (info->map[0][0] != '1' || info->map[0][info->col - 1] != '1' \
+	|| info->map[info->row - 1][0] != '1' \
+	|| info->map[info->row - 1][info->col - 1] != '1')
 	{
 		printf("EError\nThis map is not surrounded\n");
 		exit(1);
@@ -336,25 +340,7 @@ void	check_map(t_info *info)
 		exit(1);
 	}
 	//Cの座標を取る
-	get_location_C(info);
+	get_location_c(info);
+	info->win_width = info->col * TILE_SIZE;
+	info->win_height = info->row * TILE_SIZE;
 }
-
-// int main (int argc, char **argv)
-// {
-// 	t_info	info;
-
-// 	// if (argc != 2)
-// 		// return (0);
-// 	init_info(&info);
-// 	info.fd = open(argv[1], O_RDONLY);
-// 	if (info.fd < 0)
-// 		return (0);
-// 	read_map(&info);
-// 	check_map(&info);
-// 	for (int i = 0; i < info.row; i++)
-// 	{
-// 		printf("%s\n", info.map[i]);
-// 	}
-// 	printf("px = %d, py = %d, ex = %d, ey = %d, C = %d\n", info.px, info.py, info.ex, info.ey, info.C);
-// 	system("leaks a.out");
-// }

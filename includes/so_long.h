@@ -6,7 +6,7 @@
 /*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/30 23:31:44 by hiwata            #+#    #+#             */
-/*   Updated: 2021/10/15 16:57:32 by hiwata           ###   ########.fr       */
+/*   Updated: 2021/10/23 23:10:36 by hiwata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,17 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <mlx.h>
+#include "get_next_line.h"
+#include "libft.h"
+
+#define TILE_SIZE 30
 
 typedef struct 	s_tex
 {
 	int *texture[5];
-	int tex_width[5];
-	int tex_height[5];
+	int width[5];
+	int height[5];
 
 }				t_tex;
 
@@ -49,6 +54,8 @@ typedef struct s_info
 	void	*mlx;
 	void	*mlx_win;
 	char	**map;
+	int		win_width;
+	int		win_height;
 	int		row;
 	int		col;
 	int		fd;

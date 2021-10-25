@@ -6,7 +6,7 @@
 #    By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/31 19:48:29 by hiwata            #+#    #+#              #
-#    Updated: 2021/09/01 13:41:15 by hiwata           ###   ########.fr        #
+#    Updated: 2021/10/25 18:47:21 by hiwata           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ SRCS = ${addprefix ${SRCS_DIR}, ${SRCS_NAME}}
 
 HEADER = ./includes
 
-MLX_DIR = ./minilibx_mac/minilibx
+MLX_DIR = ./minilibx-linux
 
 OBJS = ${SRCS:.c=.o}
 
@@ -38,15 +38,18 @@ all:	${NAME}
 
 # gcc -L minilibx -lmlx -framework OpenGL -framework AppKit src/*.c -I include
 
-${NAME}:	${OBJS} ${HEADER}
+${NAME}:	${MLX_DIR} ${OBJS} ${HEADER}
 			@${MAKE} -C ${MLX_DIR}
-			${CC} ${CFLAG} -o ${NAME} ${OBJS} -L ${MLX_DIR} -lmlx -framework OpenGL  -framework AppKit
+			${CC} ${CFLAG} -o ${NAME} ${OBJS} -L ${MLX_DIR} -lmlx -lX11 -framework OpenGL  -framework AppKit
+
+${MLX_DIR}:
+		git clone https://github.com/42Paris/minilibx-linux.git ${MLX_DIR}
 
 clean:
 		${RM} ${OBJS}
 
 fclean:	clean
-		${RM} ${NAME}
+		${RM} ${NAME} ${MLX_DIR}
 
 re:	fclean all
 

@@ -6,7 +6,7 @@
 #    By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/31 19:48:29 by hiwata            #+#    #+#              #
-#    Updated: 2021/10/25 18:47:21 by hiwata           ###   ########.fr        #
+#    Updated: 2021/10/28 20:47:29 by hiwata           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,14 +14,14 @@ NAME = so_long
 
 SRCS_DIR = ./src/
 
-SRCS_NAME = ft_atoi.c ft_memset.c ft_split.c ft_strchr.c ft_strcmp.c ft_strdup.c ft_strjoin.c ft_strlen.c get_next_line.c get_next_line_utils.c \
+SRCS_NAME = ft_atoi.c ft_memset.c ft_isdigit.c ft_split.c ft_strchr.c ft_strcmp.c ft_strdup.c ft_strjoin.c ft_strlen.c get_next_line.c get_next_line_utils.c \
 			 readfile.c map.c
 
 SRCS = ${addprefix ${SRCS_DIR}, ${SRCS_NAME}}
 
 HEADER = ./includes
 
-MLX_DIR = ./minilibx-linux
+MLX_DIR = ./minilibx_mac/minilibx
 
 OBJS = ${SRCS:.c=.o}
 
@@ -40,16 +40,16 @@ all:	${NAME}
 
 ${NAME}:	${MLX_DIR} ${OBJS} ${HEADER}
 			@${MAKE} -C ${MLX_DIR}
-			${CC} ${CFLAG} -o ${NAME} ${OBJS} -L ${MLX_DIR} -lmlx -lX11 -framework OpenGL  -framework AppKit
+			${CC} ${CFLAG} -o ${NAME} ${OBJS} -L ${MLX_DIR} -lmlx -framework OpenGL  -framework AppKit
 
-${MLX_DIR}:
-		git clone https://github.com/42Paris/minilibx-linux.git ${MLX_DIR}
+# ${MLX_DIR}:
+# 		git clone https://github.com/42Paris/minilibx-linux.git ${MLX_DIR}
 
 clean:
 		${RM} ${OBJS}
 
 fclean:	clean
-		${RM} ${NAME} ${MLX_DIR}
+		${RM} ${NAME}
 
 re:	fclean all
 

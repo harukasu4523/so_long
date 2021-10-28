@@ -1,29 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/28 20:18:52 by hiwata            #+#    #+#             */
-/*   Updated: 2021/10/28 20:18:55 by hiwata           ###   ########.fr       */
+/*   Created: 2021/10/28 20:45:51 by hiwata            #+#    #+#             */
+/*   Updated: 2021/10/28 20:47:01 by hiwata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include"libft.h"
 
-int	ft_strcmp(char const *s1, char const *s2)
+int		ft_isdigit(int c)
 {
-	int	i;
-
-	if (!s1 || !s2)
-		return (-1);
-	i = 0;
-	while (s1[i] && s2[i])
-	{
-		if (s1[i] != s2[i])
-			break ;
-		i++;
-	}
-	return (s1[i] - s2[i]);
+	if ('0' <= c && c <= '9')
+		return (1);
+	else
+		return (0);
 }

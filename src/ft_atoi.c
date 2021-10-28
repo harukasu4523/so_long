@@ -1,31 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/28 20:17:18 by hiwata            #+#    #+#             */
+/*   Updated: 2021/10/28 20:18:10 by hiwata           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
-// 99999999999999 でオーバーフロー
-// 時間あるとき直せよ
-
-int	ft_atoi(const char *str)
+int	ft_atoi(const char *s)
 {
-	int				sign;
-	unsigned long	result;
+	long long	nb;
+	int			flag;
 
-	while (*str == ' ' || (*str >= '\t' && *str <= '\r'))
-		str++;
-	sign = 1;
-	if (*str == '-' || *str == '+')
+	nb = 0;
+	flag = 1;
+	while (*s == '\t' || *s == '\n' || *s == '\v' || *s == '\f' \
+	|| *s == '\r' || *s == ' ')
+		s++;
+	if (*s == '-' || *s == '+')
 	{
-		if (*str == '-')
-			sign = -1;
-		str++;
+		if (*s == '-')
+			flag *= -1;
+		s++;
 	}
-	result = 0;
-	while ('0' <= *str && *str <= '9')
+	while (ft_isdigit(*s))
 	{
-		result = result * 10 + (*str - '0');
-		if (result > LONG_MAX && sign == 1)
-			return (-1);
-		if (result > (unsigned long)-LONG_MIN && sign == -1)
-			return (0);
-		str++;
+		nb *= 10;
+		nb += (long long)*s - '0';
+		s++;
 	}
-	return (result * sign);
+	return ((int)(nb * flag));
 }

@@ -6,7 +6,7 @@
 /*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/30 23:29:24 by hiwata            #+#    #+#             */
-/*   Updated: 2021/10/29 21:35:48 by hiwata           ###   ########.fr       */
+/*   Updated: 2021/10/29 22:35:24 by hiwata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	make_map(t_info *info)
 
 int	win_destroy(t_info *info)
 {
-	free_texture(info, 4);
+	// free_texture(info, 4);
 	mlx_destroy_window(info->mlx, info->mlx_win);
 	system("leaks so_long");
 	exit(0);
@@ -170,19 +170,19 @@ int	key_released(int keycode, t_info *info)
 	return (1);
 }
 
-void free_texture(t_info *info, int tex_num)
-{
-	int i;
+// void free_texture(t_info *info, int tex_num)
+// {
+// 	int i;
 
-	i = tex_num + 1;
-	while(i > 0)
-	{
-		free(info->tex.texture[tex_num])
-		info->tex.texture[tex_num] = NULL;
-		i--;
-		tex_num--;
-	}
-}
+// 	i = tex_num + 1;
+// 	while(i > 0)
+// 	{
+// 		free(info->tex.texture[tex_num]);
+// 		info->tex.texture[tex_num] = NULL;
+// 		i--;
+// 		tex_num--;
+// 	}
+// }
 
 void	get_texture(t_info *info, t_data *img, int tex_num)
 {
@@ -210,18 +210,18 @@ void	texture_in(t_info *info, t_data *img, char *path, int tex_num)
 	if (img->img == 0)
 	{
 		printf("Error\nGetting the XPM file didn't work");
-		free_texture(info, tex_num);
+		// free_texture(info, tex_num);
 		exit(1);
 	}
 	info->tex.width[tex_num] = img->width;
 	info->tex.height[tex_num] = img->height;
-	info->tex.texture[tex_num] = \
-	(int *)malloc(sizeof(int) * (img->width * img->height));
-	if (!info->tex.texture[tex_num])
-	{
-		free_texture(info, tex_num);
-		exit(1);
-	}
+	// info->tex.texture[tex_num] = \
+	// (int *)malloc(sizeof(int) * (img->width * img->height));
+	// if (!info->tex.texture[tex_num])
+	// {
+	// 	free_texture(info, tex_num);
+	// 	exit(1);
+	// }
 	img->data = (int *)mlx_get_data_addr \
 	(img->img, &(img->bits_per_pixel), &(img->line_length), &(img->endian));
 	get_texture(info, img, tex_num);

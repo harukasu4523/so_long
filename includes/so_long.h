@@ -6,7 +6,7 @@
 /*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/30 23:31:44 by hiwata            #+#    #+#             */
-/*   Updated: 2021/10/29 22:33:48 by hiwata           ###   ########.fr       */
+/*   Updated: 2021/10/29 22:51:08 by hiwata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 
 typedef struct s_tex
 {
-	int	texture[5][4096];
+	int	*texture[5];
 	int	width[5];
 	int	height[5];
 

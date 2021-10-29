@@ -6,7 +6,7 @@
 /*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/30 23:29:24 by hiwata            #+#    #+#             */
-/*   Updated: 2021/10/29 18:43:01 by hiwata           ###   ########.fr       */
+/*   Updated: 2021/10/29 21:35:48 by hiwata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ void	make_map(t_info *info)
 
 int	win_destroy(t_info *info)
 {
+	free_texture(info, 4);
 	mlx_destroy_window(info->mlx, info->mlx_win);
 	system("leaks so_long");
 	exit(0);
@@ -112,8 +113,7 @@ void	player_walk(t_info *info)
 	new_x = info->px + info->p.move_x;
 	new_y = info->py + info->p.move_y;
 	if (info->map[new_y][new_x] != WALL)
-
-
+	{
 		if (info->map[new_y][new_x] != END || info->c == 0)
 		{
 			if (info->map[new_y][new_x] == END)
@@ -126,6 +126,7 @@ void	player_walk(t_info *info)
 			info->map[info->py][info->px] = FLOOR;
 			info->c--;
 		}
+	}
 }
 
 void	player_move_init(t_info *info)
@@ -149,7 +150,7 @@ int	key_released(int keycode, t_info *info)
 {
 	if (keycode == ESC)
 	{
-		mlx_destroy_window(info->mlx, info->mlx_win);
+		win_destroy(info);
 		exit(0);
 	}
 	if (keycode == UP || keycode == DOWN || \
@@ -167,6 +168,20 @@ int	key_released(int keycode, t_info *info)
 	if (keycode == RIGHT)
 		info->p.move_x = 1;
 	return (1);
+}
+
+void free_texture(t_info *info, int tex_num)
+{
+	int i;
+
+	i = tex_num + 1;
+	while(i > 0)
+	{
+		free(info->tex.texture[tex_num])
+		info->tex.texture[tex_num] = NULL;
+		i--;
+		tex_num--;
+	}
 }
 
 void	get_texture(t_info *info, t_data *img, int tex_num)
@@ -195,12 +210,18 @@ void	texture_in(t_info *info, t_data *img, char *path, int tex_num)
 	if (img->img == 0)
 	{
 		printf("Error\nGetting the XPM file didn't work");
-		return ;
+		free_texture(info, tex_num);
+		exit(1);
 	}
 	info->tex.width[tex_num] = img->width;
 	info->tex.height[tex_num] = img->height;
 	info->tex.texture[tex_num] = \
 	(int *)malloc(sizeof(int) * (img->width * img->height));
+	if (!info->tex.texture[tex_num])
+	{
+		free_texture(info, tex_num);
+		exit(1);
+	}
 	img->data = (int *)mlx_get_data_addr \
 	(img->img, &(img->bits_per_pixel), &(img->line_length), &(img->endian));
 	get_texture(info, img, tex_num);

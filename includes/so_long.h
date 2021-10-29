@@ -6,7 +6,7 @@
 /*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/30 23:31:44 by hiwata            #+#    #+#             */
-/*   Updated: 2021/10/28 22:17:57 by hiwata           ###   ########.fr       */
+/*   Updated: 2021/10/29 21:25:18 by hiwata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void	get_location_object(t_info *info, char**map, int y, int x);
 void	read_map(t_info *info);
 int		find_chr(const char *s1, const char *s2);
 void	free_line(t_info *info, int ret, char *line);
+void	free_texture(t_info *info, int tex_num);
 bool	set_map(char *line, t_info *info);
 void	is_map_square(char **buf, t_info *info);
 void	init_info(t_info *info);

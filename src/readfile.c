@@ -6,7 +6,7 @@
 /*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 16:44:36 by hiwata            #+#    #+#             */
-/*   Updated: 2021/10/28 22:02:56 by hiwata           ###   ########.fr       */
+/*   Updated: 2021/10/29 18:50:35 by hiwata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,7 @@ void	read_map(t_info *info)
 {
 	int		ret;
 	char	*line;
-	int		i;
 
-	i = 0;
 	ret = get_next_line(info->fd, &line);
 	while (ret > 0)
 	{

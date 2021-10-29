@@ -6,7 +6,7 @@
 /*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/30 23:29:24 by hiwata            #+#    #+#             */
-/*   Updated: 2021/10/28 22:13:20 by hiwata           ###   ########.fr       */
+/*   Updated: 2021/10/29 18:36:32 by hiwata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,8 +127,6 @@ void	player_walk(t_info *info)
 			info->map[info->py][info->px] = FLOOR;
 			info->c--;
 		}
-
-	info->cnt_flag = false;
 }
 
 void	player_move_init(t_info *info)
@@ -158,11 +156,8 @@ int	key_released(int keycode, t_info *info)
 	if (keycode == M_UP || keycode == M_DOWN || \
 	keycode == M_LEFT || keycode == M_RIGHT)
 	{
-		if (!info->cnt_flag)
-		{
-			info->move_cnt++;
-			printf("Current number of moves : %d\n", info->move_cnt);
-		}
+		info->move_cnt++;
+		printf("Current number of moves : %d\n", info->move_cnt);
 	}
 	if (keycode == M_DOWN)
 		info->p.move_y = 1;

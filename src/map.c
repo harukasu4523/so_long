@@ -6,12 +6,11 @@
 /*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/30 23:29:24 by hiwata            #+#    #+#             */
-/*   Updated: 2021/10/29 18:36:32 by hiwata           ###   ########.fr       */
+/*   Updated: 2021/10/29 18:43:01 by hiwata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
 
 /* 0 = floor 1 = wall 2 = exit 3 = object 4 = player */
 bool	is_transparent(int tex_num, int color, int *j)
@@ -148,24 +147,24 @@ int	render(t_info *info)
 
 int	key_released(int keycode, t_info *info)
 {
-	if (keycode == M_ESC)
+	if (keycode == ESC)
 	{
 		mlx_destroy_window(info->mlx, info->mlx_win);
 		exit(0);
 	}
-	if (keycode == M_UP || keycode == M_DOWN || \
-	keycode == M_LEFT || keycode == M_RIGHT)
+	if (keycode == UP || keycode == DOWN || \
+	keycode == LEFT || keycode == RIGHT)
 	{
 		info->move_cnt++;
 		printf("Current number of moves : %d\n", info->move_cnt);
 	}
-	if (keycode == M_DOWN)
+	if (keycode == DOWN)
 		info->p.move_y = 1;
-	if (keycode == M_UP)
+	if (keycode == UP)
 		info->p.move_y = -1;
-	if (keycode == M_LEFT)
+	if (keycode == LEFT)
 		info->p.move_x = -1;
-	if (keycode == M_RIGHT)
+	if (keycode == RIGHT)
 		info->p.move_x = 1;
 	return (1);
 }

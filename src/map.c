@@ -6,7 +6,7 @@
 /*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/30 23:29:24 by hiwata            #+#    #+#             */
-/*   Updated: 2021/10/31 21:08:55 by hiwata           ###   ########.fr       */
+/*   Updated: 2021/10/31 21:17:13 by hiwata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,7 @@ void free_texture(t_info *info, int tex_num)
 		i--;
 		tex_num--;
 	}
+	free(info->tex.texture)
 }
 
 void	get_texture(t_info *info, t_data *img, int tex_num)
@@ -258,7 +259,7 @@ int	main(int argc, char **argv)
 	mlx_new_window(info.mlx, info.win_width, info.win_height, "so_long");
 	load_texture(&info);
 	info.img.img = \
-	mlx_new_image(info.mlx, info.col * TILE_SIZE, info.row * TILE_SIZE);
+	mlx_new_image(info.mlx, info.win_width, info.win_height);
 	info.img.data = (int *)mlx_get_data_addr(info.img.img, \
 	&(info.img.bits_per_pixel), &(info.img.line_length), &(info.img.endian));
 	mlx_hook(info.mlx_win, 3, 1L << 1, &key_released, &info);

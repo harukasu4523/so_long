@@ -6,22 +6,22 @@
 /*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 16:44:36 by hiwata            #+#    #+#             */
-/*   Updated: 2021/10/29 18:50:35 by hiwata           ###   ########.fr       */
+/*   Updated: 2021/10/31 21:30:11 by hiwata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-bool	freei_return(char **ptr, int n, bool ret)
+bool	freei_return(char ***ptr, int n, bool ret)
 {
 	int	i;
 
-	if (!ptr)
+	if (!*ptr)
 		return (ret);
 	i = 0;
 	while (i < n)
-		free(ptr[i++]);
-	free(ptr);
+		free(*ptr[i++]);
+	free(*ptr);
 	return (ret);
 }
 
@@ -79,15 +79,15 @@ bool	set_map(char *line, t_info *info)
 	{
 		new[i] = ft_strdup(old[i]);
 		if (!new[i])
-			return (freei_return(new, i, false));
+			return (freei_return(&new, i, false));
 		i++;
 	}
 	new[i] = ft_strdup(line);
 	if (!new[i])
-		return (freei_return(new, i, false));
+		return (freei_return(&new, i, false));
 	info->map = new;
 	info->row++;
-	return (freei_return(old, info->row - 1, true));
+	return (freei_return(&old, info->row - 1, true));
 }
 
 void	free_line(t_info *info, int ret, char *line)

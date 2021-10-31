@@ -6,7 +6,7 @@
 /*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/30 23:29:24 by hiwata            #+#    #+#             */
-/*   Updated: 2021/10/31 21:17:13 by hiwata           ###   ########.fr       */
+/*   Updated: 2021/10/31 21:30:41 by hiwata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	make_map(t_info *info)
 int	win_destroy(t_info *info)
 {
 	free_texture(info, 4);
-	freei_return(info->map, info->row - 1, true);
+	freei_return(&info->map, info->row - 1, true);
 	if (info->mlx)
 		mlx_destroy_display(info->mlx);
 	free(info->mlx);
@@ -181,11 +181,10 @@ void free_texture(t_info *info, int tex_num)
 	while(i > 0)
 	{
 		free(info->tex.texture[tex_num]);
-		info->tex.texture[tex_num] = NULL;
 		i--;
 		tex_num--;
 	}
-	free(info->tex.texture)
+	free(info->tex.texture);
 }
 
 void	get_texture(t_info *info, t_data *img, int tex_num)

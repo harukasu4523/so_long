@@ -6,7 +6,7 @@
 /*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/30 23:29:24 by hiwata            #+#    #+#             */
-/*   Updated: 2021/10/29 22:50:51 by hiwata           ###   ########.fr       */
+/*   Updated: 2021/10/31 21:08:55 by hiwata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,12 @@ void	make_map(t_info *info)
 
 int	win_destroy(t_info *info)
 {
-	// free_texture(info, 4);
+	free_texture(info, 4);
+	freei_return(info->map, info->row - 1, true);
+	if (info->mlx)
+		mlx_destroy_display(info->mlx);
+	free(info->mlx);
 	mlx_destroy_window(info->mlx, info->mlx_win);
-	system("leaks so_long");
 	exit(0);
 }
 

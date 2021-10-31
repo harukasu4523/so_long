@@ -6,7 +6,7 @@
 /*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/30 23:29:24 by hiwata            #+#    #+#             */
-/*   Updated: 2021/10/31 21:30:41 by hiwata           ###   ########.fr       */
+/*   Updated: 2021/10/31 22:15:23 by hiwata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	make_map(t_info *info)
 int	win_destroy(t_info *info)
 {
 	free_texture(info, 4);
-	freei_return(&info->map, info->row - 1, true);
+	freei_return(info->map, info->row - 1, true);
 	if (info->mlx)
 		mlx_destroy_display(info->mlx);
 	free(info->mlx);
@@ -177,12 +177,11 @@ void free_texture(t_info *info, int tex_num)
 {
 	int i;
 
-	i = tex_num + 1;
-	while(i > 0)
+	i = 0;
+	while(i < tex_num)
 	{
-		free(info->tex.texture[tex_num]);
-		i--;
-		tex_num--;
+		free(info->tex.texture[i]);
+		i++;
 	}
 	free(info->tex.texture);
 }
@@ -204,6 +203,8 @@ void	get_texture(t_info *info, t_data *img, int tex_num)
 		}
 		y++;
 	}
+	mlx_destroy_display(info->mlx);
+	free(info->mlx);
 }
 
 void	texture_in(t_info *info, t_data *img, char *path, int tex_num)
@@ -219,7 +220,7 @@ void	texture_in(t_info *info, t_data *img, char *path, int tex_num)
 	info->tex.width[tex_num] = img->width;
 	info->tex.height[tex_num] = img->height;
 	info->tex.texture[tex_num] = \
-	(int *)malloc(sizeof(int) * (img->width * img->height));
+	malloc(sizeof(int) * (img->width * img->height));
 	if (!info->tex.texture[tex_num])
 	{
 		free_texture(info, tex_num);

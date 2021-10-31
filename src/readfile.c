@@ -6,22 +6,22 @@
 /*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 16:44:36 by hiwata            #+#    #+#             */
-/*   Updated: 2021/10/31 21:30:11 by hiwata           ###   ########.fr       */
+/*   Updated: 2021/10/31 21:38:05 by hiwata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-bool	freei_return(char ***ptr, int n, bool ret)
+bool	freei_return(char **ptr, int n, bool ret)
 {
 	int	i;
 
-	if (!*ptr)
+	if (!ptr)
 		return (ret);
 	i = 0;
 	while (i < n)
-		free(*ptr[i++]);
-	free(*ptr);
+		free(ptr[i++]);
+	free(ptr);
 	return (ret);
 }
 

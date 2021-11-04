@@ -6,7 +6,7 @@
 /*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 16:44:36 by hiwata            #+#    #+#             */
-/*   Updated: 2021/10/31 22:17:29 by hiwata           ###   ########.fr       */
+/*   Updated: 2021/11/04 20:16:04 by hiwata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ bool	set_map(char *line, t_info *info)
 
 	old = info->map;
 	new = malloc(sizeof(char *) * (info->row + 1));
+	//false時freeして
 	if (!new)
 		return (false);
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: hiwata <hiwata@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/30 23:29:24 by hiwata            #+#    #+#             */
-/*   Updated: 2021/10/31 22:15:23 by hiwata           ###   ########.fr       */
+/*   Updated: 2021/11/04 20:15:53 by hiwata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,15 @@ void	make_map(t_info *info)
 
 int	win_destroy(t_info *info)
 {
-	free_texture(info, 4);
+	free_texture(info, 5);
 	freei_return(info->map, info->row - 1, true);
+	if (info->img.data)
+		mlx_destroy_image(info->img.data);
 	if (info->mlx)
+	{
 		mlx_destroy_display(info->mlx);
-	free(info->mlx);
+		free(info->mlx);
+	}
 	mlx_destroy_window(info->mlx, info->mlx_win);
 	exit(0);
 }
@@ -203,8 +207,6 @@ void	get_texture(t_info *info, t_data *img, int tex_num)
 		}
 		y++;
 	}
-	mlx_destroy_display(info->mlx);
-	free(info->mlx);
 }
 
 void	texture_in(t_info *info, t_data *img, char *path, int tex_num)
@@ -229,6 +231,7 @@ void	texture_in(t_info *info, t_data *img, char *path, int tex_num)
 	img->data = (int *)mlx_get_data_addr \
 	(img->img, &(img->bits_per_pixel), &(img->line_length), &(img->endian));
 	get_texture(info, img, tex_num);
+	// mlx_destroy_image(imfo->mlx, img->img);
 }
 
 /* 0 = floor 1 = wall 2 = exit 3 = object 4 = player */
